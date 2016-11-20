@@ -1,0 +1,72 @@
+## PEAR 介绍 
+[PEAR][1] 是另一个常用的依赖包管理器, 它跟 Composer 很类似，但是也有一些显著的区别。
+
+PEAR 需要扩展包有专属的结构, 开发者在开发扩展包的时候要提前考虑为 PEAR 定制, 否则后面将无法使用 PEAR.
+
+PEAR 安装扩展包的时候, 是全局安装的, 意味着一旦安装了某个扩展包, 同一台服务器上的所有项目都能用上, 当然, 好处是当多个项目共同使用同一个扩展包的同一个版本, 坏处是如果你需要使用不同版本的话, 就会产生冲突.
+
+### 如何安装 PEAR
+
+你可以通过下载 `.phar` 文件来安装 PEAR. [官方文档安装部分][2] 里面有不同系统中安装 PEAR 的详细信息.
+
+如果你是使用 Linux, 你可以尝试找下系统应用管理器, 举个栗子, Debian 和 Ubuntu 有个 `php-pear` 的 apt 安装包.
+
+### 如何安装扩展包
+
+如果扩展包是在 [PEAR packages list][3] 这个列表里面的, 你可以使用以下命令安装:
+
+```console
+pear install foo
+```
+
+如果扩展包是托管到别的渠道上, 你需要 `发现 (discover)` 渠道先, 请见文档 [使用渠道][4].
+
+* [Learn about PEAR][1]
+
+### 使用 Composer 来安装 PEAR 扩展包
+
+如果你正在使用 [Composer][5], 并且你想使用一些 PEAR 的代码, 你可以通过 Composer 来安装 PEAR 扩展包.
+
+下面是从 `pear2.php.net` 安装代码依赖的示例:
+
+```json
+{
+    "repositories": [
+        {
+            "type": "pear",
+            "url": "http://pear2.php.net"
+        }
+    ],
+    "require": {
+        "pear-pear2/PEAR2_Text_Markdown": "*",
+        "pear-pear2/PEAR2_HTTP_Request": "*"
+    }
+}
+```
+
+第一部分 `"repositories"` 是让 Composer 从哪个渠道去获取扩展包, 然后, `"repositories"` 部分使用下面的命名规范:
+
+> pear-channel/Package
+
+前缀 "pear" 是为了避免冲突写死的.
+
+成功安装扩展包以后, 代码会放到项目的 `vendor` 文件夹中, 并且可以通过加载 Composer 的自动加载器进行加载:
+
+> vendor/pear-pear2.php.net/PEAR2_HTTP_Request/pear2/HTTP/Request.php
+
+在代码里面可以这样使用:
+
+```php
+<?php
+$request = new pear2\HTTP\Request();
+```
+
+* [学习更多 PEAR 和 Composer 的使用][6]
+
+
+[1]: http://pear.php.net/
+[2]: http://pear.php.net/manual/en/installation.getting.php
+[3]: http://pear.php.net/packages.php
+[4]: http://pear.php.net/manual/en/guide.users.commandline.channels.php
+[5]: /#composer_and_packagist
+[6]: http://getcomposer.org/doc/05-repositories.md#pear
